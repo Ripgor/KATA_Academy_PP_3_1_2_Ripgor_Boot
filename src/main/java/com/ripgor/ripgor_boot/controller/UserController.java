@@ -1,13 +1,13 @@
-package com.ripgor.ripgor_boot.controllers;
+package com.ripgor.ripgor_boot.controller;
 
-import com.ripgor.ripgor_boot.models.User;
+import com.ripgor.ripgor_boot.model.User;
 import com.ripgor.ripgor_boot.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -56,9 +56,9 @@ public class UserController {
         return "user-update";
     }
 
-    @PostMapping("/user-update")
+    @PatchMapping("/user-update")
     public String updateUser(User user) {
-        userService.saveUser(user);
+        userService.updateUser(user);
 
         return "redirect:/users";
     }

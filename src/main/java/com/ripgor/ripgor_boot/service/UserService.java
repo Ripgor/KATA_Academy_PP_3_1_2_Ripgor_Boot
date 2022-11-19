@@ -1,7 +1,7 @@
 package com.ripgor.ripgor_boot.service;
 
 import com.ripgor.ripgor_boot.dao.UserDao;
-import com.ripgor.ripgor_boot.models.User;
+import com.ripgor.ripgor_boot.model.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public class UserService {
     }
 
     public User findUser(int id) {
-        return userDao.findById(id).orElse(null);
+        return userDao.findById(id).get();
     }
 
     public List<User> getAllUsers() {
@@ -29,5 +29,12 @@ public class UserService {
 
     public void saveUser(User user) {
         userDao.save(user);
+    }
+
+    public void updateUser(User user) {
+        User userToUpdate = userDao.findById(user.getId()).get();
+        userToUpdate.setName(user.getName());
+        userToUpdate.setEmail(user.getEmail());
+        userDao.save(userToUpdate);
     }
 }

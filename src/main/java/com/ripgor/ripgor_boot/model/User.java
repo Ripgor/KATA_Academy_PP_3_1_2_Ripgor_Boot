@@ -1,4 +1,4 @@
-package com.ripgor.ripgor_boot.models;
+package com.ripgor.ripgor_boot.model;
 
 import javax.persistence.*;
 
