@@ -6,16 +6,20 @@
 </head>
 <body>
 
-<form action="#" th:action="@{/user-update}" th:object="${user}" th:method="patch">
+<form action="#" th:action="@{/admin/user-update}" th:object="${user}" th:method="patch">
     <label for="id">Id</label>
     <input readonly type="number" th:field="*{id}" id="id" placeholder="Id">
     <br>
+    <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
     <label for="name">Name</label>
     <input type="text" th:field="*{name}" id="name" placeholder="name">
     <br>
+    <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
     <label for="email">Email</label>
     <input type="text" th:field="*{email}" id="email" placeholder="email">
     <br>
+    <label for="roles">Roles</label>
+    <input type="text" th:field="*{roles}" id="roles" placeholder="roles">
     <br>
     <input type="submit" value="EDIT">
 </form>

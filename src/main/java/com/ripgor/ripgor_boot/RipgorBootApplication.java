@@ -1,6 +1,5 @@
 package com.ripgor.ripgor_boot;
 
-import com.ripgor.ripgor_boot.config.JpaConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -8,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class RipgorBootApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(new Class<?>[] {RipgorBootApplication.class, JpaConfig.class}, args);
+        SpringApplication.run(new Class<?>[] {RipgorBootApplication.class}, args);
     }
 
 }

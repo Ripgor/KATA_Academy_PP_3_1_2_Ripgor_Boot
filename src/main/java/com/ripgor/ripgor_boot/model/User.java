@@ -1,12 +1,22 @@
 package com.ripgor.ripgor_boot.model;
 
-import javax.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
+import java.util.Collection;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,10 +24,25 @@ public class User {
     private int id;
 
     @Column
+    @NotEmpty(message = "Name should not be empty!")
     private String name;
 
     @Column
+    @Email(message = "Email should be valid!")
     private String email;
+
+    @Column
+    @Size(message = "Password must should not be shorter than 5 characters!")
+    private String password;
+
+    // Самостоятельно формирует таблицу
+    // Данные загружаем сразу -- ролей не так много, можно увеличить скорость
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    // Формирует таблицу связи между юзерами и ролями
+    @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"))
+    // Хотим хранить знаечния в виде строки
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles;
 
     public User() {
     }
@@ -50,6 +75,53 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles.stream().map(role -> new SimpleGrantedAuthority(role.name()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public String getUsername() {
+        return this.getName();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     @Override
